@@ -6,7 +6,7 @@ public class gamblingSimulator {
 	public static int BET = 1;
 	public static void main(String[] args) {
 
-	System.out.println("Welcome to Gambling Simulation");
+	System.out.println("Welcome to Gambling Simulation Program");
 	
 	}
 }
