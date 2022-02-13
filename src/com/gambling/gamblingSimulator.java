@@ -1,49 +1,63 @@
 package com.gambling;
 
+import java.util.Random;
+
 public class gamblingSimulator {
-	public static int STAKE = 100;
-	public static int BET = 1;
+	public static final int STAKE_PER_DAY = 100;// STAKE PER DAY
+	public static final int BET_PER_GAME = 1;
 	public static final int WIN = 1;
-	public static int stake = 0;
+	public static int stake = 0;/// intial gambler bets with 1
+	static int daysWonCount = 0;
+	static int daysLostCount = 0;
 
+	/*
+	 * wincheck function will check if gambler wins or loss
+	 */
 	public static void checkForWinner() {
-
-		int TRIAL = (int) Math.floor(Math.random() * 2);// Random Value
-		System.out.println("Value Is " + TRIAL);
-
-		if (TRIAL == 0) {
-			System.out.println("Gambler Wins the game");
-			STAKE++;
-			// Print Results as per Random value
-			System.out.println("Gambler looses the game");
-			STAKE--;
+		Random random = new Random();
+		int betReturns = random.nextInt(2);
+		if (betReturns == WIN) {
+			stake++;// incrementing
+		} else {
+			stake--;// decrementing
 		}
-
-		System.out.println("Gambler having stake after bet are of $ " + STAKE);// Stake Value
 	}
 
-	public static void checkForResign() {
+	/*
+	 * As a Calculative Gambler if won or lost 50% of the stake, would resign for
+	 * the day
+	 */
+	public static void resignCheck() {
 		int totalStake = 0;
+		stake = 0;
 		while (stake != 50 && stake != -50) {
 			checkForWinner();
 		}
-		totalStake = stake + STAKE;
+		totalStake = stake + STAKE_PER_DAY;
 		System.out.println("Total stake for resign for a day is  " + totalStake);
-
 	}
 
-	public static void monthlyWinCheck() {
+	/*
+	 * After playing consecutively for 20 days every day would like to know the
+	 * total amount won or lost.
+	 */
+	public static void monthlyCheck() {
 		int day;
 		for (day = 1; day <= 20; day++) {
 			System.out.printf("day %d\n", day);
-			checkForResign();
+			resignCheck();
+			if (stake == 50) {
+				daysWonCount++;
+			} else if (stake == -50) {
+				daysLostCount++;
+			}
 		}
+		System.out.printf("Days won for a month = %d\nDays lost for a month = %d\n", daysWonCount, daysLostCount);
+
 	}
 
 	public static void main(String[] args) {
 		System.out.println("Welcome to Gambling Simulation");
-		checkForWinner();
-		checkForResign();
-		monthlyWinCheck();
+		monthlyCheck();
 	}
 }
